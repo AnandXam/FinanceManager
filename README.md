@@ -84,7 +84,7 @@ FinanceManager/
 
 | Component | Technology |
 |-----------|-----------|
-| Framework | .NET 8 MAUI |
+| Framework | .NET 10 MAUI |
 | Architecture | MVVM (CommunityToolkit.Mvvm) |
 | Database | SQLite (sqlite-net-pcl) |
 | Charts | LiveChartsCore.SkiaSharpView.Maui |
@@ -95,10 +95,10 @@ FinanceManager/
 ## Getting Started
 
 ### Prerequisites
-- .NET 8 SDK
-- Visual Studio 2022 (17.8+) with MAUI workload, or JetBrains Rider
-- Android SDK (for Android target)
-- Xcode 15+ (for iOS/macOS targets)
+- .NET 10 SDK
+- Visual Studio 2026+ with MAUI workload, or JetBrains Rider
+- Android SDK (API 24+) for Android target
+- Xcode 26+ (for iOS/macOS targets)
 
 ### Setup
 
@@ -114,13 +114,13 @@ FinanceManager/
 ### Running
 ```bash
 # Android
-dotnet build -t:Run -f net8.0-android
+dotnet build -t:Run -f net10.0-android
 
 # iOS (macOS only)
-dotnet build -t:Run -f net8.0-ios
+dotnet build -t:Run -f net10.0-ios
 
 # Windows
-dotnet build -t:Run -f net8.0-windows10.0.19041.0
+dotnet build -t:Run -f net10.0-windows10.0.19041.0
 ```
 
 ### AI Model Setup (Optional)
