@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:FinanceManager.Converters"
+             x:Class="FinanceManager.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- ═══ Value Converters ═══ -->
+            <converters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:BoolToExpenseColorConverter x:Key="BoolToExpenseColorConverter" />
+            <converters:BoolToIncomeColorConverter x:Key="BoolToIncomeColorConverter" />
+            <converters:InvertedBoolToIncomeColorConverter x:Key="InvertedBoolToIncomeColorConverter" />
+            <converters:BoolToTabLabelConverter x:Key="BoolToTabLabelConverter" />
+            <converters:BoolToDefaultLabelConverter x:Key="BoolToDefaultLabelConverter" />
+            <converters:IntToBoolConverter x:Key="IntToBoolConverter" />
+            <converters:BoolToAddButtonConverter x:Key="BoolToAddButtonConverter" />
+            <converters:BoolToFilterActiveConverter x:Key="BoolToFilterActiveConverter" />
+            <converters:BoolToIncomeFilterConverter x:Key="BoolToIncomeFilterConverter" />
+            <converters:BoolToExpenseFilterConverter x:Key="BoolToExpenseFilterConverter" />
+            <converters:PercentToWidthConverter x:Key="PercentToWidthConverter" />
+            <converters:IndexToColorConverter x:Key="IndexToColorConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+
+</Application>

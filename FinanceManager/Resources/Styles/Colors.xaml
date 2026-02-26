@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- ═══ Brand Colors ═══ -->
+    <Color x:Key="Primary">#6C63FF</Color>
+    <Color x:Key="PrimaryDark">#4834DF</Color>
+    <Color x:Key="PrimaryLight">#8B83FF</Color>
+    <Color x:Key="Secondary">#4ECDC4</Color>
+
+    <!-- ═══ Background Colors ═══ -->
+    <Color x:Key="BackgroundDark">#0F0F23</Color>
+    <Color x:Key="BackgroundCard">#1A1A3E</Color>
+    <Color x:Key="BackgroundCardLight">#252550</Color>
+    <Color x:Key="BackgroundElevated">#33336680</Color>
+
+    <!-- ═══ Text Colors ═══ -->
+    <Color x:Key="TextPrimary">#FFFFFF</Color>
+    <Color x:Key="TextSecondary">#B8B8D4</Color>
+    <Color x:Key="TextMuted">#9E9EBE</Color>
+    <Color x:Key="TextDisabled">#555577</Color>
+
+    <!-- ═══ Semantic Colors ═══ -->
+    <Color x:Key="IncomeGreen">#4CAF50</Color>
+    <Color x:Key="IncomeGreenLight">#81C784</Color>
+    <Color x:Key="IncomeGreenDark">#2E7D32</Color>
+    <Color x:Key="ExpenseRed">#FF6B6B</Color>
+    <Color x:Key="ExpenseRedDark">#F44336</Color>
+    <Color x:Key="WarningOrange">#FF9800</Color>
+    <Color x:Key="InfoBlue">#2196F3</Color>
+
+    <!-- ═══ Chart Colors ═══ -->
+    <Color x:Key="Chart1">#FF6B6B</Color>
+    <Color x:Key="Chart2">#4ECDC4</Color>
+    <Color x:Key="Chart3">#45B7D1</Color>
+    <Color x:Key="Chart4">#96CEB4</Color>
+    <Color x:Key="Chart5">#FFEAA7</Color>
+    <Color x:Key="Chart6">#DDA0DD</Color>
+    <Color x:Key="Chart7">#FF8A5C</Color>
+    <Color x:Key="Chart8">#A8E6CF</Color>
+
+    <!-- ═══ Surface Colors ═══ -->
+    <Color x:Key="SurfaceIncomeLight">#1A2E1A</Color>
+    <Color x:Key="SurfaceExpenseLight">#2E1A1A</Color>
+    <Color x:Key="SurfaceWarningLight">#2E2E1A</Color>
+
+    <!-- ═══ Border Colors ═══ -->
+    <Color x:Key="BorderDefault">#333355</Color>
+    <Color x:Key="BorderActive">#6C63FF</Color>
+
+</ResourceDictionary>

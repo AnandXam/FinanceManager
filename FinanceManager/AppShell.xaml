@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:FinanceManager.Views"
+       x:Class="FinanceManager.AppShell"
+       Shell.FlyoutBehavior="Disabled"
+       Shell.BackgroundColor="#1A1A3E"
+       Shell.ForegroundColor="White"
+       Shell.TitleColor="White"
+       Shell.TabBarBackgroundColor="#0F0F23"
+       Shell.TabBarForegroundColor="#6C63FF"
+       Shell.TabBarUnselectedColor="#555577"
+       Shell.TabBarTitleColor="#6C63FF">
+
+    <!-- Login Page (no tab bar) -->
+    <ShellContent Route="LoginPage"
+                  ContentTemplate="{DataTemplate views:LoginPage}"
+                  Shell.TabBarIsVisible="False" />
+
+    <!-- Main Tab Bar -->
+    <TabBar Route="MainTabs">
+        <ShellContent Route="DashboardPage"
+                      Title="Dashboard"
+                      Icon="dashboard_icon.png"
+                      ContentTemplate="{DataTemplate views:DashboardPage}" />
+
+        <ShellContent Route="TransactionHistoryPage"
+                      Title="History"
+                      Icon="history_icon.png"
+                      ContentTemplate="{DataTemplate views:TransactionHistoryPage}" />
+
+        <ShellContent Route="AIAnalysisPage"
+                      Title="AI Insights"
+                      Icon="ai_icon.png"
+                      ContentTemplate="{DataTemplate views:AIAnalysisPage}" />
+    </TabBar>
+
+</Shell>

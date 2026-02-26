@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FinanceManager.ViewModels"
+             xmlns:models="clr-namespace:FinanceManager.Models"
+             x:Class="FinanceManager.Views.CategoryPage"
+             x:DataType="vm:CategoryViewModel"
+             Title="Categories"
+             BackgroundColor="#0F0F23"
+             Shell.BackgroundColor="#1A1A3E"
+             Shell.ForegroundColor="White"
+             Shell.TitleColor="White">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <!-- ═══ Tab Bar ═══ -->
+        <Border Grid.Row="0"
+                StrokeShape="RoundRectangle 16"
+                BackgroundColor="#1A1A3E"
+                Padding="4"
+                Margin="20,16,20,0"
+                StrokeThickness="0">
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="4">
+                <Border Grid.Column="0"
+                        StrokeShape="RoundRectangle 12"
+                        BackgroundColor="{Binding IsExpenseTabSelected, Converter={StaticResource BoolToExpenseColorConverter}}"
+                        Padding="14,12"
+                        StrokeThickness="0">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectExpenseTabCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Expense Categories"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center" />
+                </Border>
+
+                <Border Grid.Column="1"
+                        StrokeShape="RoundRectangle 12"
+                        BackgroundColor="{Binding IsExpenseTabSelected, Converter={StaticResource InvertedBoolToIncomeColorConverter}}"
+                        Padding="14,12"
+                        StrokeThickness="0">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectIncomeTabCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label Text="Income Categories"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <RefreshView Grid.Row="1"
+                     Command="{Binding LoadCategoriesCommand}"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     RefreshColor="#6C63FF">
+            <ScrollView>
+                <VerticalStackLayout Spacing="16" Padding="20,16">
+
+                    <!-- ═══ Categories List ═══ -->
+                    <Border StrokeShape="RoundRectangle 20"
+                            BackgroundColor="#1A1A3E"
+                            Padding="16"
+                            StrokeThickness="0">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="{Binding IsExpenseTabSelected, Converter={StaticResource BoolToTabLabelConverter}}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   Margin="4,0,0,8" />
+
+                            <!-- Expense Categories -->
+                            <CollectionView ItemsSource="{Binding ExpenseCategories}"
+                                            IsVisible="{Binding IsExpenseTabSelected}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:Category">
+                                        <SwipeView>
+                                            <SwipeView.RightItems>
+                                                <SwipeItems>
+                                                    <SwipeItem Text="Delete"
+                                                               BackgroundColor="#F44336"
+                                                               Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoryViewModel}}, Path=DeleteCategoryCommand}"
+                                                               CommandParameter="{Binding .}" />
+                                                </SwipeItems>
+                                            </SwipeView.RightItems>
+                                            <Border StrokeShape="RoundRectangle 14"
+                                                    BackgroundColor="#252550"
+                                                    Padding="14,12"
+                                                    Margin="0,3"
+                                                    StrokeThickness="0">
+                                                <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12">
+                                                    <Border StrokeShape="RoundRectangle 12"
+                                                            BackgroundColor="{Binding ColorHex}"
+                                                            HeightRequest="44"
+                                                            WidthRequest="44"
+                                                            Opacity="0.2"
+                                                            StrokeThickness="0">
+                                                        <Label Text="{Binding Icon}"
+                                                               FontSize="22"
+                                                               HorizontalOptions="Center"
+                                                               VerticalOptions="Center" />
+                                                    </Border>
+                                                    <Label Grid.Column="1"
+                                                           Text="{Binding Name}"
+                                                           FontSize="15"
+                                                           TextColor="White"
+                                                           VerticalOptions="Center" />
+                                                    <Label Grid.Column="2"
+                                                           Text="{Binding IsDefault, Converter={StaticResource BoolToDefaultLabelConverter}}"
+                                                           FontSize="11"
+                                                           TextColor="#6C63FF"
+                                                           VerticalOptions="Center" />
+                                                </Grid>
+                                            </Border>
+                                        </SwipeView>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <!-- Income Categories -->
+                            <CollectionView ItemsSource="{Binding IncomeCategories}"
+                                            IsVisible="{Binding IsExpenseTabSelected, Converter={StaticResource InvertedBoolConverter}}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:Category">
+                                        <SwipeView>
+                                            <SwipeView.RightItems>
+                                                <SwipeItems>
+                                                    <SwipeItem Text="Delete"
+                                                               BackgroundColor="#F44336"
+                                                               Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoryViewModel}}, Path=DeleteCategoryCommand}"
+                                                               CommandParameter="{Binding .}" />
+                                                </SwipeItems>
+                                            </SwipeView.RightItems>
+                                            <Border StrokeShape="RoundRectangle 14"
+                                                    BackgroundColor="#252550"
+                                                    Padding="14,12"
+                                                    Margin="0,3"
+                                                    StrokeThickness="0">
+                                                <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12">
+                                                    <Border StrokeShape="RoundRectangle 12"
+                                                            BackgroundColor="{Binding ColorHex}"
+                                                            HeightRequest="44"
+                                                            WidthRequest="44"
+                                                            Opacity="0.2"
+                                                            StrokeThickness="0">
+                                                        <Label Text="{Binding Icon}"
+                                                               FontSize="22"
+                                                               HorizontalOptions="Center"
+                                                               VerticalOptions="Center" />
+                                                    </Border>
+                                                    <Label Grid.Column="1"
+                                                           Text="{Binding Name}"
+                                                           FontSize="15"
+                                                           TextColor="White"
+                                                           VerticalOptions="Center" />
+                                                    <Label Grid.Column="2"
+                                                           Text="{Binding IsDefault, Converter={StaticResource BoolToDefaultLabelConverter}}"
+                                                           FontSize="11"
+                                                           TextColor="#4CAF50"
+                                                           VerticalOptions="Center" />
+                                                </Grid>
+                                            </Border>
+                                        </SwipeView>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- ═══ Suggested Categories ═══ -->
+                    <Border StrokeShape="RoundRectangle 20"
+                            BackgroundColor="#1A1A3E"
+                            Padding="16"
+                            StrokeThickness="0"
+                            IsVisible="{Binding SuggestedCategories.Count, Converter={StaticResource IntToBoolConverter}}">
+                        <VerticalStackLayout Spacing="12">
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="💡" FontSize="18" VerticalOptions="Center" />
+                                <Label Text="Suggested Categories"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       TextColor="White"
+                                       VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                            <Label Text="Tap to add these popular categories"
+                                   FontSize="13"
+                                   TextColor="#9E9EBE" />
+
+                            <FlexLayout Wrap="Wrap"
+                                        JustifyContent="Start"
+                                        BindableLayout.ItemsSource="{Binding SuggestedCategories}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:SuggestedCategory">
+                                        <Border StrokeShape="RoundRectangle 20"
+                                                BackgroundColor="#252550"
+                                                Padding="12,8"
+                                                Margin="0,0,8,8"
+                                                StrokeThickness="1"
+                                                Stroke="#333366">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CategoryViewModel}}, Path=AddSuggestedCategoryCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                            </Border.GestureRecognizers>
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label Text="{Binding Icon}" FontSize="16" VerticalOptions="Center" />
+                                                <Label Text="{Binding Name}" FontSize="13" TextColor="#B8B8D4" VerticalOptions="Center" />
+                                                <Label Text="+" FontSize="14" TextColor="#6C63FF" VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- ═══ Add Custom Category ═══ -->
+                    <Border StrokeShape="RoundRectangle 20"
+                            BackgroundColor="#1A1A3E"
+                            Padding="16"
+                            StrokeThickness="0">
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Text="Custom Category"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       TextColor="White" />
+                                <Button Grid.Column="1"
+                                        Text="{Binding IsAddingCategory, Converter={StaticResource BoolToAddButtonConverter}}"
+                                        Command="{Binding ToggleAddCategoryCommand}"
+                                        BackgroundColor="#6C63FF"
+                                        TextColor="White"
+                                        FontSize="13"
+                                        HeightRequest="36"
+                                        CornerRadius="18"
+                                        Padding="16,0" />
+                            </Grid>
+
+                            <VerticalStackLayout IsVisible="{Binding IsAddingCategory}" Spacing="12">
+                                <Entry Text="{Binding NewCategoryName}"
+                                       Placeholder="Category name"
+                                       PlaceholderColor="#555577"
+                                       TextColor="White"
+                                       FontSize="16"
+                                       BackgroundColor="#252550" />
+
+                                <Grid ColumnDefinitions="*, *" ColumnSpacing="12">
+                                    <Entry Grid.Column="0"
+                                           Text="{Binding NewCategoryIcon}"
+                                           Placeholder="Icon (emoji)"
+                                           PlaceholderColor="#555577"
+                                           TextColor="White"
+                                           FontSize="16"
+                                           BackgroundColor="#252550" />
+                                    <Entry Grid.Column="1"
+                                           Text="{Binding NewCategoryColor}"
+                                           Placeholder="Color (#hex)"
+                                           PlaceholderColor="#555577"
+                                           TextColor="White"
+                                           FontSize="16"
+                                           BackgroundColor="#252550" />
+                                </Grid>
+
+                                <Button Text="Add Category"
+                                        Command="{Binding AddCategoryCommand}"
+                                        BackgroundColor="#4CAF50"
+                                        TextColor="White"
+                                        FontSize="16"
+                                        FontAttributes="Bold"
+                                        HeightRequest="48"
+                                        CornerRadius="24" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <BoxView HeightRequest="40" Color="Transparent" />
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+    </Grid>
+
+</ContentPage>
