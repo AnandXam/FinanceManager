@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FinanceManager.ViewModels"
+             xmlns:models="clr-namespace:FinanceManager.Models"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             x:Class="FinanceManager.Views.AIAnalysisPage"
+             x:DataType="vm:AIAnalysisViewModel"
+             Title="AI Analysis"
+             BackgroundColor="#0F0F23"
+             Shell.BackgroundColor="#1A1A3E"
+             Shell.ForegroundColor="White"
+             Shell.TitleColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20,16">
+
+            <!-- ═══ AI Status Header ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    Padding="20,16"
+                    StrokeThickness="0">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#1A1A3E" Offset="0.0" />
+                        <GradientStop Color="#2D1B69" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="16">
+                    <Border StrokeShape="RoundRectangle 24"
+                            BackgroundColor="#6C63FF30"
+                            HeightRequest="48"
+                            WidthRequest="48"
+                            StrokeThickness="0">
+                        <Label Text="{Binding AiStatusIcon}"
+                               FontSize="24"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="{Binding AiStatusText}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="White" />
+                        <Label Text="Analyzing your financial patterns"
+                               FontSize="12"
+                               TextColor="#9E9EBE" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- ═══ Period Selector ═══ -->
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                <HorizontalStackLayout Spacing="8">
+                    <Border StrokeShape="RoundRectangle 20"
+                            BackgroundColor="{Binding SelectedPeriodIndex, Converter={StaticResource IndexToColorConverter}, ConverterParameter=0}"
+                            Padding="16,10"
+                            StrokeThickness="0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ChangePeriodCommand}" CommandParameter="0" />
+                        </Border.GestureRecognizers>
+                        <Label Text="This Week" FontSize="13" TextColor="White" FontAttributes="Bold" />
+                    </Border>
+                    <Border StrokeShape="RoundRectangle 20"
+                            BackgroundColor="{Binding SelectedPeriodIndex, Converter={StaticResource IndexToColorConverter}, ConverterParameter=1}"
+                            Padding="16,10"
+                            StrokeThickness="0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ChangePeriodCommand}" CommandParameter="1" />
+                        </Border.GestureRecognizers>
+                        <Label Text="This Month" FontSize="13" TextColor="White" FontAttributes="Bold" />
+                    </Border>
+                    <Border StrokeShape="RoundRectangle 20"
+                            BackgroundColor="{Binding SelectedPeriodIndex, Converter={StaticResource IndexToColorConverter}, ConverterParameter=2}"
+                            Padding="16,10"
+                            StrokeThickness="0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ChangePeriodCommand}" CommandParameter="2" />
+                        </Border.GestureRecognizers>
+                        <Label Text="3 Months" FontSize="13" TextColor="White" FontAttributes="Bold" />
+                    </Border>
+                    <Border StrokeShape="RoundRectangle 20"
+                            BackgroundColor="{Binding SelectedPeriodIndex, Converter={StaticResource IndexToColorConverter}, ConverterParameter=3}"
+                            Padding="16,10"
+                            StrokeThickness="0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ChangePeriodCommand}" CommandParameter="3" />
+                        </Border.GestureRecognizers>
+                        <Label Text="6 Months" FontSize="13" TextColor="White" FontAttributes="Bold" />
+                    </Border>
+                    <Border StrokeShape="RoundRectangle 20"
+                            BackgroundColor="{Binding SelectedPeriodIndex, Converter={StaticResource IndexToColorConverter}, ConverterParameter=4}"
+                            Padding="16,10"
+                            StrokeThickness="0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ChangePeriodCommand}" CommandParameter="4" />
+                        </Border.GestureRecognizers>
+                        <Label Text="This Year" FontSize="13" TextColor="White" FontAttributes="Bold" />
+                    </Border>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <!-- ═══ Financial Overview Cards ═══ -->
+            <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
+                <!-- Income Card -->
+                <Border Grid.Column="0"
+                        StrokeShape="RoundRectangle 16"
+                        BackgroundColor="#1A2E1A"
+                        Padding="14,12"
+                        StrokeThickness="0">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Income" FontSize="11" TextColor="#81C784" />
+                        <Label Text="{Binding FormattedIncome}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#4CAF50" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Expenses Card -->
+                <Border Grid.Column="1"
+                        StrokeShape="RoundRectangle 16"
+                        BackgroundColor="#2E1A1A"
+                        Padding="14,12"
+                        StrokeThickness="0">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Expenses" FontSize="11" TextColor="#E57373" />
+                        <Label Text="{Binding FormattedExpenses}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#F44336" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Savings Rate Card -->
+                <Border Grid.Column="2"
+                        StrokeShape="RoundRectangle 16"
+                        BackgroundColor="#1A1A3E"
+                        Padding="14,12"
+                        StrokeThickness="0">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Savings" FontSize="11" TextColor="#9E9EBE" />
+                        <Label Text="{Binding FormattedSavingsRate}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{Binding SavingsRateColor}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- ═══ No Data State ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#1A1A3E"
+                    Padding="30,40"
+                    StrokeThickness="0"
+                    IsVisible="{Binding HasData, Converter={StaticResource InvertedBoolConverter}}">
+                <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                    <Label Text="📊" FontSize="48" HorizontalOptions="Center" />
+                    <Label Text="Not Enough Data"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#666688"
+                           HorizontalOptions="Center" />
+                    <Label Text="Start adding income and expenses to unlock AI-powered insights about your spending patterns."
+                           FontSize="14"
+                           TextColor="#555577"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ═══ Expense Breakdown Donut Chart ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#1A1A3E"
+                    Padding="20,16"
+                    StrokeThickness="0"
+                    IsVisible="{Binding HasData}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Expense Breakdown"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <lvc:PieChart Series="{Binding BreakdownChartSeries}"
+                                  HeightRequest="250"
+                                  InitialRotation="-90"
+                                  LegendPosition="Bottom"
+                                  LegendTextPaint="{x:Null}"
+                                  Background="Transparent" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ═══ Category Details ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#1A1A3E"
+                    Padding="20,16"
+                    StrokeThickness="0"
+                    IsVisible="{Binding HasData}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Category Details"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+
+                    <CollectionView ItemsSource="{Binding CategoryBreakdowns}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:CategoryBreakdown">
+                                <Border StrokeShape="RoundRectangle 12"
+                                        BackgroundColor="#252550"
+                                        Padding="14,10"
+                                        Margin="0,3"
+                                        StrokeThickness="0">
+                                    <Grid ColumnDefinitions="Auto, *, Auto, Auto" ColumnSpacing="12">
+                                        <BoxView Grid.Column="0"
+                                                 Color="{Binding ColorHex}"
+                                                 WidthRequest="4"
+                                                 HeightRequest="32"
+                                                 CornerRadius="2"
+                                                 VerticalOptions="Center" />
+                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                            <Label Text="{Binding CategoryName}"
+                                                   FontSize="14"
+                                                   TextColor="White" />
+                                            <Label Text="{Binding FormattedPercentage}"
+                                                   FontSize="11"
+                                                   TextColor="#9E9EBE" />
+                                        </VerticalStackLayout>
+
+                                        <!-- Progress Bar -->
+                                        <Border Grid.Column="2"
+                                                StrokeShape="RoundRectangle 4"
+                                                BackgroundColor="#33336680"
+                                                WidthRequest="80"
+                                                HeightRequest="8"
+                                                VerticalOptions="Center"
+                                                StrokeThickness="0">
+                                            <Border StrokeShape="RoundRectangle 4"
+                                                    BackgroundColor="{Binding ColorHex}"
+                                                    HeightRequest="8"
+                                                    HorizontalOptions="Start"
+                                                    WidthRequest="{Binding Percentage, Converter={StaticResource PercentToWidthConverter}}"
+                                                    StrokeThickness="0" />
+                                        </Border>
+
+                                        <Label Grid.Column="3"
+                                               Text="{Binding FormattedAmount}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"
+                                               TextColor="White"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ═══ AI Insights ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#1A1A3E"
+                    Padding="20,16"
+                    StrokeThickness="0"
+                    IsVisible="{Binding HasData}">
+                <VerticalStackLayout Spacing="12">
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="💡" FontSize="20" VerticalOptions="Center" />
+                        <Label Text="Key Insights"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <CollectionView ItemsSource="{Binding Insights}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:SpendingInsight">
+                                <Border StrokeShape="RoundRectangle 14"
+                                        BackgroundColor="#252550"
+                                        Padding="16,14"
+                                        Margin="0,4"
+                                        StrokeThickness="0">
+                                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+                                        <Label Text="{Binding Icon}"
+                                               FontSize="24"
+                                               VerticalOptions="Start" />
+                                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                            <Label Text="{Binding Title}"
+                                                   FontSize="15"
+                                                   FontAttributes="Bold"
+                                                   TextColor="White" />
+                                            <Label Text="{Binding Description}"
+                                                   FontSize="13"
+                                                   TextColor="#B8B8D4"
+                                                   LineBreakMode="WordWrap" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ═══ AI Recommendation ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    Padding="20,16"
+                    StrokeThickness="1"
+                    Stroke="#6C63FF40"
+                    IsVisible="{Binding HasData}">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#1A1A3E" Offset="0.0" />
+                        <GradientStop Color="#2A1A4E" Offset="0.5" />
+                        <GradientStop Color="#1A2A3E" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <VerticalStackLayout Spacing="12">
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="🤖" FontSize="20" VerticalOptions="Center" />
+                        <Label Text="AI Recommendation"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <Label Text="{Binding AiRecommendation}"
+                           FontSize="14"
+                           TextColor="#C8C8E4"
+                           LineBreakMode="WordWrap"
+                           LineHeight="1.5" />
+
+                    <Label Text="{Binding Period, StringFormat='Analysis period: {0}'}"
+                           FontSize="11"
+                           TextColor="#666688"
+                           Margin="0,4,0,0" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ═══ Refresh Button ═══ -->
+            <Button Text="Refresh Analysis"
+                    Command="{Binding RefreshCommand}"
+                    BackgroundColor="#6C63FF"
+                    TextColor="White"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    Margin="0,8,0,0">
+                <Button.Shadow>
+                    <Shadow Brush="#406C63FF" Offset="0,4" Radius="12" />
+                </Button.Shadow>
+            </Button>
+
+            <!-- Loading -->
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="#6C63FF"
+                               HorizontalOptions="Center" />
+
+            <BoxView HeightRequest="40" Color="Transparent" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

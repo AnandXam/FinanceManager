@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FinanceManager.ViewModels"
+             xmlns:models="clr-namespace:FinanceManager.Models"
+             x:Class="FinanceManager.Views.AddTransactionPage"
+             x:DataType="vm:AddTransactionViewModel"
+             Title="Add Transaction"
+             BackgroundColor="#0F0F23"
+             Shell.BackgroundColor="#1A1A3E"
+             Shell.ForegroundColor="White"
+             Shell.TitleColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20,24">
+
+            <!-- ═══ Transaction Type Toggle ═══ -->
+            <Border StrokeShape="RoundRectangle 16"
+                    BackgroundColor="#1A1A3E"
+                    Padding="4"
+                    StrokeThickness="0">
+                <Grid ColumnDefinitions="*, *" ColumnSpacing="4">
+                    <Border Grid.Column="0"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="{Binding IsExpenseSelected, Converter={StaticResource BoolToExpenseColorConverter}}"
+                            Padding="16,14"
+                            StrokeThickness="0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectExpenseCommand}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                            <Label Text="↓" FontSize="16" TextColor="White" VerticalOptions="Center" />
+                            <Label Text="Expense"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <Border Grid.Column="1"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="{Binding IsIncomeSelected, Converter={StaticResource BoolToIncomeColorConverter}}"
+                            Padding="16,14"
+                            StrokeThickness="0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectIncomeCommand}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                            <Label Text="↑" FontSize="16" TextColor="White" VerticalOptions="Center" />
+                            <Label Text="Income"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ═══ Amount Input ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#1A1A3E"
+                    Padding="24,20"
+                    StrokeThickness="0">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Amount"
+                           FontSize="14"
+                           TextColor="#9E9EBE"
+                           FontAttributes="Bold" />
+                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="8">
+                        <Label Text="$"
+                               FontSize="36"
+                               FontAttributes="Bold"
+                               TextColor="#6C63FF"
+                               VerticalOptions="Center" />
+                        <Entry Grid.Column="1"
+                               Text="{Binding Amount}"
+                               Placeholder="0.00"
+                               PlaceholderColor="#555577"
+                               TextColor="White"
+                               FontSize="36"
+                               FontAttributes="Bold"
+                               Keyboard="Numeric"
+                               BackgroundColor="Transparent" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ═══ Description ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#1A1A3E"
+                    Padding="24,20"
+                    StrokeThickness="0">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Description"
+                           FontSize="14"
+                           TextColor="#9E9EBE"
+                           FontAttributes="Bold" />
+                    <Entry Text="{Binding Description}"
+                           Placeholder="What was this for?"
+                           PlaceholderColor="#555577"
+                           TextColor="White"
+                           FontSize="16"
+                           BackgroundColor="Transparent" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ═══ Category Selection ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#1A1A3E"
+                    Padding="24,20"
+                    StrokeThickness="0">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Category"
+                           FontSize="14"
+                           TextColor="#9E9EBE"
+                           FontAttributes="Bold" />
+                    <CollectionView ItemsSource="{Binding Categories}"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedCategory}"
+                                    HeightRequest="160">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                             Span="3"
+                                             HorizontalItemSpacing="8"
+                                             VerticalItemSpacing="8" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Category">
+                                <Border StrokeShape="RoundRectangle 12"
+                                        BackgroundColor="#252550"
+                                        Padding="8,10"
+                                        StrokeThickness="0">
+                                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                                        <Label Text="{Binding Icon}"
+                                               FontSize="22"
+                                               HorizontalOptions="Center" />
+                                        <Label Text="{Binding Name}"
+                                               FontSize="10"
+                                               TextColor="#B8B8D4"
+                                               HorizontalOptions="Center"
+                                               HorizontalTextAlignment="Center"
+                                               LineBreakMode="TailTruncation"
+                                               MaxLines="1" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ═══ Date Picker ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#1A1A3E"
+                    Padding="24,20"
+                    StrokeThickness="0">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Date"
+                           FontSize="14"
+                           TextColor="#9E9EBE"
+                           FontAttributes="Bold" />
+                    <DatePicker Date="{Binding SelectedDate}"
+                                TextColor="White"
+                                FontSize="16"
+                                BackgroundColor="Transparent"
+                                MaximumDate="{x:Static sys:DateTime.Today}"
+                                xmlns:sys="clr-namespace:System;assembly=mscorlib" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ═══ Notes ═══ -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#1A1A3E"
+                    Padding="24,20"
+                    StrokeThickness="0">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Notes (Optional)"
+                           FontSize="14"
+                           TextColor="#9E9EBE"
+                           FontAttributes="Bold" />
+                    <Editor Text="{Binding Notes}"
+                            Placeholder="Add any additional notes..."
+                            PlaceholderColor="#555577"
+                            TextColor="White"
+                            FontSize="14"
+                            BackgroundColor="Transparent"
+                            HeightRequest="80"
+                            AutoSize="TextChanges" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ═══ Error Message ═══ -->
+            <Border StrokeShape="RoundRectangle 12"
+                    BackgroundColor="#3D1F1F"
+                    Stroke="#F44336"
+                    StrokeThickness="1"
+                    Padding="16,12"
+                    IsVisible="{Binding HasError}">
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="#FF8A80"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center" />
+            </Border>
+
+            <!-- ═══ Save Button ═══ -->
+            <Button Text="Save Transaction"
+                    Command="{Binding SaveTransactionCommand}"
+                    BackgroundColor="#6C63FF"
+                    TextColor="White"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    HeightRequest="56"
+                    CornerRadius="28"
+                    Margin="0,8,0,0">
+                <Button.Shadow>
+                    <Shadow Brush="#406C63FF" Offset="0,4" Radius="12" />
+                </Button.Shadow>
+            </Button>
+
+            <!-- ═══ Cancel Button ═══ -->
+            <Button Text="Cancel"
+                    Command="{Binding CancelCommand}"
+                    BackgroundColor="Transparent"
+                    TextColor="#9E9EBE"
+                    FontSize="16"
+                    HeightRequest="48"
+                    BorderColor="#333355"
+                    BorderWidth="1"
+                    CornerRadius="24" />
+
+            <!-- Loading -->
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="#6C63FF"
+                               HorizontalOptions="Center" />
+
+            <BoxView HeightRequest="40" Color="Transparent" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
