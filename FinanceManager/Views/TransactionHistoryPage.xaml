@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FinanceManager.ViewModels"
+             xmlns:models="clr-namespace:FinanceManager.Models"
+             x:Class="FinanceManager.Views.TransactionHistoryPage"
+             x:DataType="vm:TransactionHistoryViewModel"
+             Title="Transaction History"
+             BackgroundColor="#0F0F23"
+             Shell.BackgroundColor="#1A1A3E"
+             Shell.ForegroundColor="White"
+             Shell.TitleColor="White">
+
+    <Grid RowDefinitions="Auto, Auto, *">
+
+        <!-- ═══ Search Bar ═══ -->
+        <Border Grid.Row="0"
+                StrokeShape="RoundRectangle 16"
+                BackgroundColor="#1A1A3E"
+                Padding="4"
+                Margin="20,16,20,0"
+                StrokeThickness="0">
+            <SearchBar Text="{Binding SearchQuery}"
+                       Placeholder="Search transactions..."
+                       PlaceholderColor="#555577"
+                       TextColor="White"
+                       BackgroundColor="Transparent"
+                       CancelButtonColor="#6C63FF"
+                       SearchCommand="{Binding SearchCommand}" />
+        </Border>
+
+        <!-- ═══ Filter Chips ═══ -->
+        <HorizontalStackLayout Grid.Row="1"
+                                Spacing="10"
+                                Padding="20,12"
+                                HorizontalOptions="Center">
+            <!-- All Filter -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="{Binding ShowAllFilter, Converter={StaticResource BoolToFilterActiveConverter}}"
+                    Padding="18,10"
+                    StrokeThickness="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding FilterAllCommand}" />
+                </Border.GestureRecognizers>
+                <Label Text="All"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       TextColor="White" />
+            </Border>
+
+            <!-- Income Filter -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="{Binding ShowIncomeFilter, Converter={StaticResource BoolToIncomeFilterConverter}}"
+                    Padding="18,10"
+                    StrokeThickness="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding FilterIncomeCommand}" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="6">
+                    <Label Text="↑" FontSize="12" TextColor="#4CAF50" VerticalOptions="Center" />
+                    <Label Text="Income"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- Expense Filter -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="{Binding ShowExpenseFilter, Converter={StaticResource BoolToExpenseFilterConverter}}"
+                    Padding="18,10"
+                    StrokeThickness="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding FilterExpenseCommand}" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="6">
+                    <Label Text="↓" FontSize="12" TextColor="#FF6B6B" VerticalOptions="Center" />
+                    <Label Text="Expenses"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                </HorizontalStackLayout>
+            </Border>
+        </HorizontalStackLayout>
+
+        <!-- ═══ Transactions List ═══ -->
+        <RefreshView Grid.Row="2"
+                     Command="{Binding LoadTransactionsCommand}"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     RefreshColor="#6C63FF">
+            <Grid>
+                <!-- Empty State -->
+                <VerticalStackLayout IsVisible="{Binding HasTransactions, Converter={StaticResource InvertedBoolConverter}}"
+                                     VerticalOptions="Center"
+                                     Spacing="12"
+                                     Padding="40">
+                    <Label Text="📋" FontSize="56" HorizontalOptions="Center" />
+                    <Label Text="No Transactions Found"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#666688"
+                           HorizontalOptions="Center" />
+                    <Label Text="Your transaction history will appear here once you start tracking your finances."
+                           FontSize="14"
+                           TextColor="#555577"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+
+                <!-- Grouped Transaction List -->
+                <CollectionView ItemsSource="{Binding TransactionGroups}"
+                                IsVisible="{Binding HasTransactions}"
+                                IsGrouped="True"
+                                Margin="20,0">
+                    <CollectionView.GroupHeaderTemplate>
+                        <DataTemplate x:DataType="vm:TransactionGroup">
+                            <Label Text="{Binding DisplayDate}"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#9E9EBE"
+                                   Padding="4,16,4,8" />
+                        </DataTemplate>
+                    </CollectionView.GroupHeaderTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Transaction">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Delete"
+                                                   BackgroundColor="#F44336"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TransactionHistoryViewModel}}, Path=DeleteTransactionCommand}"
+                                                   CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Border StrokeShape="RoundRectangle 14"
+                                        BackgroundColor="#1A1A3E"
+                                        Padding="14,12"
+                                        Margin="0,3"
+                                        StrokeThickness="0">
+                                    <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12">
+                                        <Border StrokeShape="RoundRectangle 12"
+                                                BackgroundColor="#252550"
+                                                HeightRequest="44"
+                                                WidthRequest="44"
+                                                StrokeThickness="0">
+                                            <Label Text="{Binding TypeIcon}"
+                                                   FontSize="20"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Border>
+
+                                        <VerticalStackLayout Grid.Column="1"
+                                                             VerticalOptions="Center"
+                                                             Spacing="2">
+                                            <Label Text="{Binding Description}"
+                                                   FontSize="15"
+                                                   FontAttributes="Bold"
+                                                   TextColor="White"
+                                                   LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding CategoryName}"
+                                                   FontSize="12"
+                                                   TextColor="#9E9EBE" />
+                                        </VerticalStackLayout>
+
+                                        <VerticalStackLayout Grid.Column="2"
+                                                             VerticalOptions="Center"
+                                                             HorizontalOptions="End"
+                                                             Spacing="2">
+                                            <Label Text="{Binding FormattedAmount}"
+                                                   FontSize="15"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{Binding AmountColor}"
+                                                   HorizontalTextAlignment="End" />
+                                            <Label Text="{Binding FormattedDate}"
+                                                   FontSize="11"
+                                                   TextColor="#9E9EBE"
+                                                   HorizontalTextAlignment="End" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.Footer>
+                        <BoxView HeightRequest="80" Color="Transparent" />
+                    </CollectionView.Footer>
+                </CollectionView>
+            </Grid>
+        </RefreshView>
+
+        <!-- ═══ Total Label Overlay ═══ -->
+        <Border Grid.Row="2"
+                StrokeShape="RoundRectangle 24"
+                BackgroundColor="#6C63FF"
+                Padding="20,12"
+                Margin="20"
+                VerticalOptions="End"
+                HorizontalOptions="Center"
+                StrokeThickness="0"
+                IsVisible="{Binding HasTransactions}">
+            <Border.Shadow>
+                <Shadow Brush="#606C63FF" Offset="0,4" Radius="16" />
+            </Border.Shadow>
+            <HorizontalStackLayout Spacing="8">
+                <Label Text="Net Total:"
+                       FontSize="15"
+                       TextColor="#D8D5FF"
+                       VerticalOptions="Center" />
+                <Label Text="{Binding TotalLabel}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Border>
+    </Grid>
+
+</ContentPage>

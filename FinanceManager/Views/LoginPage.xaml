@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FinanceManager.ViewModels"
+             x:Class="FinanceManager.Views.LoginPage"
+             x:DataType="vm:LoginViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#0F0F23">
+
+    <Grid RowDefinitions="*, Auto, Auto, *" Padding="30">
+
+        <!-- Top Section: Logo & Welcome -->
+        <VerticalStackLayout Grid.Row="0"
+                             VerticalOptions="End"
+                             Spacing="16"
+                             Padding="0,0,0,40">
+
+            <!-- App Logo Circle -->
+            <Border StrokeShape="RoundRectangle 40"
+                    BackgroundColor="#6C63FF"
+                    HeightRequest="80"
+                    WidthRequest="80"
+                    HorizontalOptions="Center"
+                    StrokeThickness="0">
+                <Label Text="💰"
+                       FontSize="36"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Border>
+
+            <Label Text="Finance Manager"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center" />
+
+            <Label Text="Take control of your finances with&#x0a;AI-powered insights"
+                   FontSize="16"
+                   TextColor="#9E9EBE"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="WordWrap" />
+        </VerticalStackLayout>
+
+        <!-- Feature Highlights -->
+        <VerticalStackLayout Grid.Row="1" Spacing="12" Padding="10,0,10,30">
+            <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
+                <Label Text="📊" FontSize="18" VerticalOptions="Center" />
+                <Label Text="Track Income &amp; Expenses" TextColor="#B8B8D4" FontSize="14" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
+                <Label Text="🤖" FontSize="18" VerticalOptions="Center" />
+                <Label Text="AI-Powered Spending Analysis" TextColor="#B8B8D4" FontSize="14" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
+                <Label Text="🔒" FontSize="18" VerticalOptions="Center" />
+                <Label Text="Secure &amp; Private – All Data On-Device" TextColor="#B8B8D4" FontSize="14" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <!-- Sign-In Buttons -->
+        <VerticalStackLayout Grid.Row="2" Spacing="16" Padding="0,0,0,20">
+
+            <!-- Error Message -->
+            <Border StrokeShape="RoundRectangle 12"
+                    BackgroundColor="#3D1F1F"
+                    Stroke="#F44336"
+                    StrokeThickness="1"
+                    Padding="16,12"
+                    IsVisible="{Binding HasError}">
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="#FF8A80"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center" />
+            </Border>
+
+            <!-- Google Sign-In Button -->
+            <Button Text="Continue with Google"
+                    Command="{Binding SignInWithGoogleCommand}"
+                    BackgroundColor="White"
+                    TextColor="#1F1F1F"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HeightRequest="56"
+                    CornerRadius="28"
+                    ImageSource="google_icon.png"
+                    Padding="20,0">
+                <Button.Shadow>
+                    <Shadow Brush="#40000000" Offset="0,4" Radius="12" />
+                </Button.Shadow>
+            </Button>
+
+            <!-- Apple Sign-In Button -->
+            <Button Text="Continue with Apple"
+                    Command="{Binding SignInWithAppleCommand}"
+                    BackgroundColor="#1F1F1F"
+                    TextColor="White"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HeightRequest="56"
+                    CornerRadius="28"
+                    BorderColor="#333355"
+                    BorderWidth="1"
+                    ImageSource="apple_icon.png"
+                    Padding="20,0">
+                <Button.Shadow>
+                    <Shadow Brush="#20000000" Offset="0,4" Radius="12" />
+                </Button.Shadow>
+            </Button>
+
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="#6C63FF"
+                               HeightRequest="30"
+                               HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <!-- Footer -->
+        <VerticalStackLayout Grid.Row="3" VerticalOptions="End" Spacing="8" Padding="0,0,0,20">
+            <Label Text="By continuing, you agree to our Terms of Service"
+                   FontSize="12"
+                   TextColor="#666688"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+            <Label Text="Your data stays on your device • 100% Private"
+                   FontSize="11"
+                   TextColor="#555577"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+    </Grid>
+
+</ContentPage>
